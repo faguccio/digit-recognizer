@@ -2,15 +2,7 @@ import time
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn import neighbors
-
-
-def accuracy(model, X, Y):
-    predictions = model.predict(X)
-    print(f"finishing predict for model: {model}")
-    good_predictions = (predictions == Y)
-    accuracy = np.sum(good_predictions) / len(X)
-    return accuracy
-
+from utilities import accuracy
 
 # Given that inference on this model is way to slow, I just compute
 # validation accuracy
@@ -20,8 +12,11 @@ def knn_train(X_train, Y_train, X_val, Y_val, k):
     k_NN = neighbors.KNeighborsClassifier(n_neighbors=k)
     k_NN.fit(X_train, Y_train)
     val_accuracy = accuracy(k_NN, X_val, Y_val)
-    print(f"finished accurcay on val data, {time.time() - start} sec")
+    print(f"    model {k}, accuracy: {val_accuracy}")
+    print(f"    time: {time.time() - start} sec")
     return (k_NN, val_accuracy)
+
+
 
 
 
@@ -34,7 +29,6 @@ def best_knn_model(X_train, Y_train, X_val, Y_val):
     for i in range(start, stop, step):
         curr, acc = knn_train(X_train, Y_train, X_val, Y_val, i)
         knn_models.append([i, curr, acc])
-        print(knn_models[-1])
 
     # Now i chose the best, and span 10
     knn_models.sort(key = lambda x: -x[2]) 
@@ -42,10 +36,10 @@ def best_knn_model(X_train, Y_train, X_val, Y_val):
     print(f"{best} is the best with big steps")
     knn_models = [best]
     start = max(1, best[0] - span)
-    end = best[0] + span
+    stop = best[0] + span
     for i in range(start, stop, 1):
         if i == best[0]:
-            break
+            continue 
         curr, acc = knn_train(X_train, Y_train, X_val, Y_val, i)
         knn_models.append([i, curr, acc])
     
