@@ -19,7 +19,7 @@ from utilities import accuracy
 def best_nn(X_train, Y_train, X_val, Y_val):
     start = time.time()
     nn = MLPClassifier(
-            hidden_layer_sizes=(1000), 
+            hidden_layer_sizes=(100, 100), 
             max_iter=202
             ).fit(X_train, Y_train)
     

@@ -4,7 +4,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn import neighbors
 from utilities import accuracy
 
-# Given that inference on this model is way to slow, I just compute
+# Given that inference on this model is way too slow, I just compute
 # validation accuracy
 
 def knn_train(X_train, Y_train, X_val, Y_val, k):
@@ -44,7 +44,5 @@ def best_knn_model(X_train, Y_train, X_val, Y_val):
         knn_models.append([i, curr, acc])
     
     knn_models.sort(key = lambda x: -x[2]) 
-    return knn_models[0] 
-
-
+    return knn_models[0]
 
