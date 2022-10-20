@@ -26,7 +26,7 @@ print(f"Size of toy problem: {len(X), len(y)}")
 #oldX = ut.copy_data_set(X)
 #assert(X[20][3][15] == oldX[20][3][15])
 
-#X = X.reshape(X.shape[0], 576)
+X = X.reshape(X.shape[0], 576)
 train_to_valtest = 0.70
 val_to_test = 0.5
 X_train, X_val, Y_train, Y_val = train_test_split(X, y, train_size=train_to_valtest) #, random_state=seed)
@@ -42,13 +42,14 @@ print(f"-----[step 1: data splitted]-----")
 #print(models.best_knn_model(X_train, Y_train, X_val, Y_val))
 
 
-from neural import best_nn
+from neural import selectNN
+selectNN(X_train, Y_train, X_val, Y_val)
 from randomForest import best_rf_model
 
-#print(best_nn(X_train, Y_train, X_val, Y_val))
 #print(best_rf_model(X_train, Y_train, X_val, Y_val))
 
+
 from convnet import best_convnet
-print(best_convnet(X_train, Y_train, X_val, Y_val))
+#print(best_convnet(X_train, Y_train, X_val, Y_val))
 
 
