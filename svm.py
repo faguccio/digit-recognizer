@@ -5,13 +5,13 @@ from sklearn import svm
     # -> C = regualrization parameter is by default 1.0f
     # -> kernel = rbf (default), poly, sigmoid, precomputed
     # -> gamma = kernel coefficient for rbf, poly and sigmoid
-def train_svc(
-                X_train, Y_train, X_val, Y_val,
-                aC, aGamma, aKernel):
-    start = time.time()
+def create_svc(aC, aGamma, aKernel):
     classifier = svm.SVC(C = aC, kernel = aKernel, gamma = aGamma)
+    return classifier
     
-    classifier.fit(X_train, Y_train)
+def train_svc(X_train, Y_train, X_val, Y_val, model):  # train e accuracy in utilities
+    start = time.time()
+    model.fit(X_train, Y_train)
     predicted = classifier.predict(X_val)
     
     print(f"    train time: {time.time() - start} sec")

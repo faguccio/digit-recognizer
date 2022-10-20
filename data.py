@@ -46,12 +46,12 @@ from neural import best_nn
 
 #print(best_nn(X_train, Y_train, X_val, Y_val))
 
-#from randomForest import best_rf_model
-#print(best_rf_model(X_train, Y_train, X_val, Y_val))
+from randomForest import best_rf_model
+print(best_rf_model(X_train, Y_train, X_val, Y_val))
 
 #from convnet import best_convnet
 #print(best_convnet(X_train, Y_train, X_val, Y_val))
 
 from svm import best_svm_model
-best_svm_model(X_train, Y_train, X_val, Y_val)
+#best_svm_model(X_train, Y_train, X_val, Y_val)
 
