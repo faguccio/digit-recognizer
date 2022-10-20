@@ -15,9 +15,7 @@ def best_convnet(X_train, Y_train, X_val, Y_val):
     print(X_train[0].shape)
    
     cnn = Sequential()
-    cnn.add(Conv2D(64, kernel_size=(3, 3), activation='relu', input_shape=X_train[0].shape))
-    cnn.add(MaxPooling2D(pool_size = (2, 2)))
-    cnn.add(Conv2D(32, kernel_size=3, activation='relu'))
+    cnn.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=X_train[0].shape))
     cnn.add(Flatten())
     cnn.add(Dense(11, activation='softmax'))
    
