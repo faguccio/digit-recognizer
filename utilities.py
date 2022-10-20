@@ -1,13 +1,22 @@
 from sklearn.metrics import confusion_matrix
 import time
 import numpy as np
+import os, sys
+
+def stopPrint(func, *args, **kwargs):
+    with open(os.devnull,"w") as devNull:
+        original = sys.stdout
+        sys.stdout = devNull
+        func(*args, **kwargs)
+        sys.stdout = original 
+
+
 
 def accuracy(model, X, Y):
     predictions = model.predict(X)
     good_predictions = (predictions == Y)
     accuracy = np.sum(good_predictions) / len(X)
     return accuracy
-
 
 
 
@@ -19,13 +28,17 @@ def train(model, X_train, Y_train):
 
 def min_score(confmatx):
     classes = [0]*11
-    for i in range(11):
+    for i in range(len(confmatx)):
         tot = 0
-        for j in range(11):
+        for j in range(len(confmatx[0])):
             tot += confmatx[i][j]
 
-        classes[i] = confmatx[i][i] / tot
-    return min(classes), i
+        if tot == 0:
+            classes[i] = 1
+        else:
+            classes[i] = confmatx[i][i] / tot
+        
+    return min(classes), classes.index(min(classes))
 
 
 def performance(model, X, Y):
@@ -34,8 +47,18 @@ def performance(model, X, Y):
     predict_time = time.time() - start
     conf_matrix = confusion_matrix(Y, np.rint(y_pred))
     min_scr, min_class = min_score(conf_matrix) 
-    return model.score(X, Y), min_scr, min_class, predict_time
+    return model.score(X, Y), min_scr, min_class, conf_matrix, predict_time
 
+
+
+def findBest(models):
+    best = None
+    for model in models:
+        if best == None or model[1][0] > best[1][0] and model[1][1] >= best[1][1]:
+            best = model
+
+    return best
+            
 
 
 
