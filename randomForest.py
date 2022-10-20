@@ -8,12 +8,12 @@ from sklearn.ensemble import RandomForestClassifier
     #n_esitmators is the number of trees in the forest
         #other possible hyperparameters are -> gini or entropy or log_loss criterions
                                      #      -> max_depth of tree
-                                     # max_leaf_nodes
-                                     #bootstrap
+                                     #      ->max_leaf_nodes
+                                     #      ->bootstrap
 
-def rf_train(X_train, Y_train, X_val, Y_val, hyperparameter):
+def rf_train(X_train, Y_train, X_val, Y_val, hyperparameter, impurity, depth):
     start = time.time()
-    rf = RandomForestClassifier(n_estimators = hyperparameter)
+    rf = RandomForestClassifier(n_estimators = hyperparameter, criterion = impurity, max_depth = depth)
     rf.fit(X_train, Y_train)
     predictions = rf.predict(X_val)
     count = 0
@@ -27,14 +27,14 @@ def rf_train(X_train, Y_train, X_val, Y_val, hyperparameter):
     return (rf, val_accuracy)
     
 
-def best_rf_model(X_train, Y_train, X_val, Y_val):  #questo metodo is basically the same as the one per knn. Potremmo farne uno unico?
+def best_rf_model(X_train, Y_train, X_val, Y_val, impurity = 'gini'):  #questo metodo is basically the same as the one per knn. Potremmo farne uno unico?
     rf_models = []
     span = 10
-    start, stop, step = 10, 300, 50
+    start, stop, step = 10, 500, 30
     
     # First, large span
     for i in range(start, stop, step):
-        curr, acc = rf_train(X_train, Y_train, X_val, Y_val, i)
+        curr, acc = rf_train(X_train, Y_train, X_val, Y_val, i, impurity)
         rf_models.append([i, curr, acc])
 
     #chose the best, and span 10
@@ -47,7 +47,7 @@ def best_rf_model(X_train, Y_train, X_val, Y_val):  #questo metodo is basically 
     for i in range(start, stop, 1):
         if i == best[0]:
             continue
-        curr, acc = rf_train(X_train, Y_train, X_val, Y_val, i)
+        curr, acc = rf_train(X_train, Y_train, X_val, Y_val, i, impurity)
         rf_models.append([i, curr, acc])
     
     rf_models.sort(key = lambda x: -x[2])

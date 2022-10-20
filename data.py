@@ -71,7 +71,8 @@ from randomForest import best_rf_model
 
 #print(best_nn(X_train, Y_train, X_val, Y_val))
 
-print(best_rf_model(X_train, Y_train, X_val, Y_val))
+
+print(best_rf_model(X_train, Y_train, X_val, Y_val, impurity = 'entropy'))
 
 
 
