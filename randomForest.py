@@ -17,7 +17,7 @@ def rf_train(X_train, Y_train, X_val, Y_val, hyperparameter):
     predictions = rf.predict(X_val)
     count = 0
     for i in range(len(Y_val)):
-        if Y_val[i] != predictions[i]:
+        if Y_val[i] == predictions[i]:
             count += 1
     val_accuracy = count/len(Y_val)
     
