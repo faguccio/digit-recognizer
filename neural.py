@@ -2,6 +2,9 @@ import time
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from utilities import train, performance
+import warnings
+import itertools
+warnings.filterwarnings('ignore') # setting ignore as a parameter
 
 # hyperparam su cui lavorare: 
 
@@ -30,17 +33,17 @@ def createNN(layers, alpha, epochs, val_frac):
 
 
 def selectNN(X_train, Y_train, X_val, Y_val):
-    layerss = (50, 50)
-    alphas = (0.0001, 0.0005)
-    epochss = (100, 50)
-    val_fracs = (0, .5, .10)
-    for layers in layerss:
-        for alpha in alphas:
-            for epochs in epochss:
-                for val_frac in val_fracs:
-                    model = createNN(layers, alpha, epochs, val_frac)
-                    train(model, X_train, Y_train)
-                    print(performance(model, X_val, Y_val))
+    models = []
 
+    layers = ((50, 50), (25, 25))
+    alphas = (0.0001, 0.0005)
+    epochs = (20, 50)
+    val_frac = (0, .5, .10)
+    comb = itertools.product(layers, alphas, epochs, val_frac)
+    for layer, alpha, epochs, val_frac in comb: 
+        model = createNN(layer, alpha, epochs, val_frac)
+        train(model, X_train, Y_train)
+        models.append((model, (performance(model, X_val, Y_val))))
+        print(models)
 
                     
