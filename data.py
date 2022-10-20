@@ -43,7 +43,7 @@ print(f"-----[step 1: data splitted]-----")
 
 
 from neural import selectNN
-selectNN(X_train, Y_train, X_val, Y_val)
+#selectNN(X_train, Y_train, X_val, Y_val)
 from randomForest import best_rf_model
 
 #print(best_rf_model(X_train, Y_train, X_val, Y_val))
@@ -51,7 +51,9 @@ from randomForest import best_rf_model
 
 
 
-from convnet import best_convnet
+#from convnet import best_convnet
 #print(best_convnet(X_train, Y_train, X_val, Y_val))
 
+from svm import best_svm_model
+best_svm_model(X_train, Y_train, X_val, Y_val)
 
