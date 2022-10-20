@@ -51,6 +51,17 @@ def performance(model, X, Y):
 
 
 
+def findBest(models):
+    best = None
+    for model in models:
+        if best == None or model[1][0] > best[1][0] and model[1][1] >= best[1][1]:
+            best = model
+
+    return best
+            
+
+
+
 # Image in format [[], ..., []]
 def copy_data_set(X):
     res = []
