@@ -10,7 +10,7 @@ from utilities import train, performance, findBest, accuracy
                                      #      -> max_depth of tree
                                      #      ->max_leaf_nodes
                                      #      ->bootstrap
-def create_rf( aNumber , anImpurity):
+def createRF( aNumber , anImpurity):
         rf = RandomForestClassifier(n_estimators = aNumber, criterion = anImpurity)
         return rf
 
@@ -35,19 +35,14 @@ def selectRF(X_train, Y_train, X_val, Y_val):
     
     best_acc = 0
     best_combo = (0, '')
-    start, stop, step = 10, 500, 50  
+    start, stop, step = 5, 20, 1  
     impurityMeasures = ['gini', 'entropy', 'log_loss']
     
+
     for imp in impurityMeasures:
         for i in range(start, stop, step):
-            rf = create_rf(i, imp)
-            train(rf, X_train, Y_train)
-            acc = accuracy(rf, X_val, Y_val)
+            rf = createRF(i, imp)
+            print(f"        time: {train(rf, X_train, Y_train)}")
             models.append((rf, (performance(rf, X_val, Y_val))))
-            if acc > best_acc:
-                best_acc = acc
-                best_combo = (i, imp)
-    print(f"best rf model has hyperparameters = {best_combo} ")
-    print(f"accuracy : {best_acc}")
-    
+            print(f"        acc: {models[-1][1][0]}")
     return findBest(models)

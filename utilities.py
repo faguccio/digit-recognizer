@@ -12,10 +12,9 @@ def stopPrint(func, *args, **kwargs):
 
 
 
-def accuracy(model, X, Y):
-    predictions = model.predict(X)
-    good_predictions = (predictions == Y)
-    accuracy = np.sum(good_predictions) / len(X)
+def accuracy(y_pred, Y):
+    good_predictions = (y_pred == Y)
+    accuracy = np.sum(good_predictions) / len(Y)
     return accuracy
 
 
@@ -23,7 +22,7 @@ def accuracy(model, X, Y):
 def train(model, X_train, Y_train):
     start = time.time()
     model.fit(X_train, Y_train)
-    return start-time.time()
+    return -start+time.time()
     
 
 def min_score(confmatx):
@@ -37,7 +36,8 @@ def min_score(confmatx):
             classes[i] = 1
         else:
             classes[i] = confmatx[i][i] / tot
-        
+    if min(classes) == 0 and classes.index(min(classes)) == 10:
+        input(confmatx)
     return min(classes), classes.index(min(classes))
 
 
@@ -47,21 +47,21 @@ def performance(model, X, Y):
     predict_time = time.time() - start
     conf_matrix = confusion_matrix(Y, np.rint(y_pred))
     min_scr, min_class = min_score(conf_matrix)
-    score = model.score(X, Y)
-    print(f"model {model} has score : {score}")
+    score = accuracy(y_pred, Y)
     return score, min_scr, min_class, conf_matrix, predict_time
 
 
 
 def performanceKeras(model, X, Y):
     start = time.time()
-    y_pred = cnn.predict(X)
+    y_pred = model.predict(X, verbose=0)
     predict_time = time.time() - start
-    y_pred = [ list(a).index(max(a)) for a in y_pred]
-    Y_val = [ list(a).index(max(a)) for a in Y]
-    conf_matrix = confusion_matrix(Y, np.rint(y_pred))
+    y_pred = np.array([ list(a).index(max(a)) for a in y_pred])
+    Y_val = np.array([ list(a).index(max(a)) for a in Y])
+    score = accuracy(y_pred, Y_val)
+    conf_matrix = confusion_matrix(Y_val, np.rint(y_pred))
     min_scr, min_class = min_score(conf_matrix) 
-    return model.score(X, Y), min_scr, min_class, conf_matrix, predict_time
+    return score, min_scr, min_class, conf_matrix, predict_time
 
 
 

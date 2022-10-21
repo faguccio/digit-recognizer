@@ -1,8 +1,9 @@
 import numpy as np
+import time
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import utilities as ut
-#from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler
 
 X = np.load("MNIST-images.npy")
 y = np.load("MNIST-labels.npy")
@@ -44,7 +45,7 @@ print(f"{len(X_eight)}")
 
 #seed = 547845
 
-reduction = 0.005
+reduction = 0.01
 # Making a toy problem with super small size, so exec time is lower
 
 X, _, y, __ = train_test_split(X, y, train_size=reduction) #, random_state=seed)
@@ -73,32 +74,66 @@ X_test.extend(eights_x_test)
 Y_test.extend(eights_y_test)
 
 
-
-X = np.array(X)
-X = X.reshape(X.shape[0], 576)
-
+X_train = np.array(X_train)
+Y_train = np.array(Y_train)
+X_val= np.array(X_val)
+Y_val= np.array(Y_val)
 print(f"-----[step 1: data splitted]-----")
 
 
+                                  
 
-"""
-from neural import selectNN
-print(selectNN(X_train, Y_train, X_val, Y_val))
-"""
+
+finalist = []
 
 from convnet import selectCNN
-print(selectCNN(X_train, Y_train, X_val, Y_val))
-#from neural import selectNN
-#selectNN(X_train, Y_train, X_val, Y_val)
+print("**********************\n\n\n")
+
+
+
+first_start = time.time()
+print("CNN")
+start = time.time()
+#finalist.append(selectCNN(X_train, Y_train, X_val, Y_val))
+print(f"totale time = {time.time() - start}")
+
+
+X_train = X_train.reshape(X_train.shape[0], 576)
+X_val = X_val.reshape(X_val.shape[0], 576)
+
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)   
+X_val = scaler.transform(X_val)      
+#X_test = scaler.transform(X_test)   
+
+ 
+
+from neural import selectNN
+
+print("NeuralNetwork")
+start = time.time()
+#finalist.append(selectNN(X_train, Y_train, X_val, Y_val))
+print(f"totale time = {time.time() - start}")
+
+
+from svm import selectSVC
+print("SVC")
+start = time.time()
+#finalist.append(selectSVC(X_train, Y_train, X_val, Y_val))
+print(f"totale time = {time.time() - start}")
+
 
 from randomForest import selectRF
+print("Random Forest")
+start = time.time()
+finalist.append(selectRF(X_train, Y_train, X_val, Y_val))
+print(f"totale time = {time.time() - start}")
 
-#print(selectRF(X_train, Y_train, X_val, Y_val))
+print(f"totale time for real: {time.time() - first_start}")
 
-#print(best_nn(X_train, Y_train, X_val, Y_val))
+winner = ut.findBest(finalist)
+print(winner)
 
 
 
-
-#from convnet import selectCNN
-#print(best_convnet(X_train, Y_train, X_val, Y_val))

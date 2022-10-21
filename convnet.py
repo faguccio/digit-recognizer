@@ -5,7 +5,7 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.utils import to_categorical
 from keras.layers import Conv2D, MaxPooling2D 
 import numpy as np
-from utilities import performanceKeras
+from utilities import performanceKeras, findBest
 import time
 
 def createCNN(conv_layers):
@@ -89,15 +89,16 @@ def selectCNN(X_train, Y_train, X_val, Y_val):
     for fl in final_layers:
         final_layers.append(fl.copy().append(Dropout(0.1)))
     """    
-    
-    for bs, ep in itertools.product([32, 128], [6, 12]): 
+   
+    models = []
+    print(f"how many cnn: {len(fl)}")
+    for bs, ep in itertools.product([32, 128], [6]): 
         for fl in final_layers:
-            print(fl[1])
+            print(f"    {fl[1]}")
             model = createCNN(fl[0])
-            print(f"time {trainCNN(model, X_train, Y_train, X_val, Y_val, bs, ep)}")
-            score = model.evaluate(X_val, Y_val, verbose = 0) 
-            print(f'Test accuracy bs:{bs} ep:{ep}:', score[1]) 
-
-    
+            print(f"        time {trainCNN(model, X_train, Y_train, X_val, Y_val, bs, ep)}")
+            models.append((model, (performanceKeras(model, X_val, Y_val))))
+            print(f"        acc: {models[-1][1][0]}")  
+    return findBest(models)
 
 
