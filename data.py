@@ -89,9 +89,9 @@ finalist = []
 from convnet import selectCNN
 print("**********************\n\n\n")
 
-
-
 first_start = time.time()
+
+"""
 print("CNN")
 start = time.time()
 finalist.append(selectCNN(X_train, Y_train, X_val, Y_val))
@@ -106,17 +106,16 @@ scaler.fit(X_train)
 X_train = scaler.transform(X_train)   
 X_val = scaler.transform(X_val)      
 #X_test = scaler.transform(X_test)   
-
  
 
 from neural import selectNN
 
 print("NeuralNetwork")
 start = time.time()
-#finalist.append(selectNN(X_train, Y_train, X_val, Y_val))
+finalist.append(selectNN(X_train, Y_train, X_val, Y_val))
 print(f"totale time = {time.time() - start}")
 
-
+"""
 from svm import selectSVC
 print("SVC")
 start = time.time()

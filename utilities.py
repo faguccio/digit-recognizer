@@ -11,7 +11,6 @@ def stopPrint(func, *args, **kwargs):
         sys.stdout = original 
 
 
-
 def accuracy(y_pred, Y):
     good_predictions = (y_pred == Y)
     accuracy = np.sum(good_predictions) / len(Y)
@@ -91,3 +90,14 @@ def copy_data_set(X):
         res.append(copy)
     
     return res
+
+
+
+def printByVal(models, key, val):
+    summ = 0
+    tot = 0
+    for model in models:
+        if model[2][key] == val:
+            summ += model[1][0]
+            tot += 1
+    print(summ/tot)
