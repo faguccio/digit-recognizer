@@ -15,12 +15,19 @@ print(f"-----[0: data imoported]-----")
 # Image preprocessing (increase contrast maybe)
 # sarebbe anche da pulire lo sfondo, ma come?
 
+#plt.imshow(X[6000], cmap="Greys")
+#plt.show()
 
 for i in range(len(X)):
-    X[i] = np.where(X[i] > 178, 255, 0)
+    brightest = X[i].max()
+    threshold = brightest // 2
+    X[i] = np.where(X[i] > 178, X[i], 0)
 
+#plt.imshow(X[6000], cmap = "Greys")
+#plt.show()
+
+X = X.reshape(X.shape[0], 576)
 X = (X/255).astype('float32')
-
 
 
 #there is an abundance of 3 digits and a shortage of 8 digits.
@@ -119,14 +126,15 @@ import convnet
 print("**********************\n\n\n")
 
 
-first_start = time.time()
 print("CNN")
+first_start = time.time()
 start = time.time()
+
 finalist.append(convnet.selectCNN(X_train, Y_train, X_val, Y_val))
 print(f"totale time = {time.time() - start}")
 
 
-
+#preprocessing
 X_train = X_train.reshape(X_train.shape[0], 576)
 X_val = X_val.reshape(X_val.shape[0], 576)
 X_test = X_test.reshape(X_test.shape[0], 576)
@@ -134,14 +142,15 @@ X_test = X_test.reshape(X_test.shape[0], 576)
 
 #input(beauty_test[0].shape)
 
-
-
 """
 scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)   
 X_val = scaler.transform(X_val)      
- """
+<<<<<<< HEAD
+X_test = scaler.transform(X_test)   
+"""
+ 
 
 import neural
 
@@ -163,15 +172,11 @@ print("Random Forest")
 start = time.time()
 finalist.append(randomForest.selectRF(X_train, Y_train, X_val, Y_val))
 print(f"totale time = {time.time() - start}")
-
 print(f"totale time for real: {time.time() - first_start}")
 
 
-
-
 def predictt(model, test=False):
-        
-    if type(model) is keras.engine.sequential.Sequential: 
+    if type(model) is keras.engine.sequential.Sequential:
         pred = model.predict(beauty_val)
         if test:
             pred = model.predict(beauty_test)
@@ -179,7 +184,8 @@ def predictt(model, test=False):
     else:
         if test: 
             return model.predict(X_test)
-        return model.predict(X_val)
+            
+    return model.predict(X_val)
         
 
 
@@ -187,21 +193,20 @@ def predictt(model, test=False):
 for model in finalist:
     predictions = predictt(model[0])
     print(len(predictions), len(Y_val))
-    ut.printConfMatx(model[0], predictions, Y_val)
-    
-    
+    ut.printConfMatx(model[0], predictions, Y_val, True)
+ 
+
 winner = ut.findBest(finalist)
 if len(winner) > 2:
     winner[2]
 else:
     print(winner)
-    
+
 
 predictions = predictt(winner[0], test=True)
-ut.printConfMatx(model[0], predictions, Y_test)
+ut.printConfMatx(model[0], predictions, Y_test, False)
 print(f"   {winner[0]} test accuracy is :  ")
 test_acc = ut.accuracy(predictions, Y_test)
 print(f"{test_acc}")
-
 
 

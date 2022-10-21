@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 import os, sys
+import sklearn
 
 def stopPrint(func, *args, **kwargs):
     with open(os.devnull,"w") as devNull:
@@ -99,9 +100,20 @@ def printByVal(models, key, val):
             tot += 1
     print(summ/tot)
     
-def printConfMatx(model, predictions, Y_val):
+def printConfMatx(model, predictions, Y_val, flag):
     disp = metrics.ConfusionMatrixDisplay.from_predictions(Y_val, predictions)
     disp.figure_.suptitle(f"{model} Confusion Matrix")
     print(f"Confusion matrix:\n{disp.confusion_matrix}")
-
-    plt.show()
+    #plt.show()
+    modelClass = type(model)
+    if(flag):
+        if isinstance(model, sklearn.svm.SVC):
+            plt.savefig('./images/confusionSVC.png')
+        elif isinstance(model, sklearn.ensemble.RandomForestClassifier):
+            plt.savefig('./images/confusionRF.png')
+        elif isinstance(model, sklearn.neural_network.MLPClassifier):
+            plt.savefig('./images/confusionNN.png')
+        else:
+            plt.savefig('./images/confusionCNN.png')
+    else:
+        plt.savefig('./images/confusionWINNER.png')
