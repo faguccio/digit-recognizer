@@ -21,12 +21,11 @@ print(f"-----[0: data imoported]-----")
 for i in range(len(X)):
     brightest = X[i].max()
     threshold = brightest // 2
-    X[i] = np.where(X[i] > 178, X[i], 0)
+    X[i] = np.where(X[i] > 178, 255, 0)
 
 #plt.imshow(X[6000], cmap = "Greys")
 #plt.show()
 
-X = X.reshape(X.shape[0], 576)
 X = (X/255).astype('float32')
 
 
@@ -58,23 +57,19 @@ print(f"{len(X_eight)}")
 
 # Train, val and test separation
 
-#seed = 547845
+seed = 547845
 
-reduction = 0.01
-X, _, y, __ = train_test_split(X, y, train_size=reduction) #, random_state=seed)
-print(f"Size of toy problem: {len(X), len(y)}")
-X_eight, _ , Y_eight, __ = train_test_split(X_eight, Y_eight, train_size = reduction)
 
 
 train_to_valtest = 0.70
 val_to_test = 0.5
-X_train, X_val, Y_train, Y_val = train_test_split(X, y, train_size=train_to_valtest) #, random_state=seed)
-X_val, X_test, Y_val, Y_test = train_test_split(X_val, Y_val, train_size=val_to_test) #, random_state=seed)
+X_train, X_val, Y_train, Y_val = train_test_split(X, y, train_size=train_to_valtest, random_state=seed)
+X_val, X_test, Y_val, Y_test = train_test_split(X_val, Y_val, train_size=val_to_test, random_state=seed)
 
 
 y = y + Y_eight
-eights_x_train, eights_x_valtest, eights_y_train, eights_y_valtest = train_test_split(X_eight, Y_eight, train_size = train_to_valtest)
-eights_x_val, eights_x_test, eights_y_val, eights_y_test = train_test_split(eights_x_valtest, eights_y_valtest, train_size = val_to_test)
+eights_x_train, eights_x_valtest, eights_y_train, eights_y_valtest = train_test_split(X_eight, Y_eight, train_size = train_to_valtest, random_state=seed)
+eights_x_val, eights_x_test, eights_y_val, eights_y_test = train_test_split(eights_x_valtest, eights_y_valtest, train_size = val_to_test, random_state=seed)
 
 X_train.extend(eights_x_train)
 Y_train.extend(eights_y_train)
@@ -205,7 +200,7 @@ else:
 
 predictions = predictt(winner[0], test=True)
 ut.printConfMatx(model[0], predictions, Y_test, False)
-print(f"   {winner[0]} test accuracy is :  ")
+print(f"   {winner} test accuracy is :  ")
 test_acc = ut.accuracy(predictions, Y_test)
 print(f"{test_acc}")
 
