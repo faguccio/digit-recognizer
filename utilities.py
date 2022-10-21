@@ -46,8 +46,10 @@ def performance(model, X, Y):
     y_pred = model.predict(X)
     predict_time = time.time() - start
     conf_matrix = confusion_matrix(Y, np.rint(y_pred))
-    min_scr, min_class = min_score(conf_matrix) 
-    return model.score(X, Y), min_scr, min_class, conf_matrix, predict_time
+    min_scr, min_class = min_score(conf_matrix)
+    score = model.score(X, Y)
+    print(f"model {model} has score : {score}")
+    return score, min_scr, min_class, conf_matrix, predict_time
 
 
 

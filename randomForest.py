@@ -2,6 +2,7 @@ import time
 import numpy as np
 import matplotlib as plt
 from sklearn.ensemble import RandomForestClassifier
+from utilities import train, performance, findBest, accuracy
 
 
     #n_esitmators is the number of trees in the forest
@@ -13,6 +14,7 @@ def create_rf( aNumber , anImpurity):
         rf = RandomForestClassifier(n_estimators = aNumber, criterion = anImpurity)
         return rf
 
+"""
 def rf_train(X_train, Y_train, X_val, Y_val, rf):
     start = time.time()
     rf.fit(X_train, Y_train)
@@ -26,9 +28,11 @@ def rf_train(X_train, Y_train, X_val, Y_val, rf):
     print(f"    accuracy: {val_accuracy}")
     print(f"    time: {time.time() - start} sec")
     return val_accuracy
-    
+ """
 
-def best_rf_model(X_train, Y_train, X_val, Y_val):  #questo metodo is basically the same as the one per knn. Potremmo farne uno unico?
+def selectRF(X_train, Y_train, X_val, Y_val):
+    models = []
+    
     best_acc = 0
     best_combo = (0, '')
     start, stop, step = 10, 500, 50  
@@ -37,11 +41,13 @@ def best_rf_model(X_train, Y_train, X_val, Y_val):  #questo metodo is basically 
     for imp in impurityMeasures:
         for i in range(start, stop, step):
             rf = create_rf(i, imp)
-            acc = rf_train(X_train, Y_train, X_val, Y_val, rf)
+            train(rf, X_train, Y_train)
+            acc = accuracy(rf, X_val, Y_val)
+            models.append((rf, (performance(rf, X_val, Y_val))))
             if acc > best_acc:
-                best_rf = rf
-                best_acc = acc;
+                best_acc = acc
                 best_combo = (i, imp)
     print(f"best rf model has hyperparameters = {best_combo} ")
     print(f"accuracy : {best_acc}")
-    return best_rf
+    
+    return findBest(models)

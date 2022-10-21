@@ -14,6 +14,16 @@ print(f"-----[0: data imoported]-----")
 X = (X/255).astype('float32')
 
 
+#creating a list of all 8s and removing them from the original dataset.
+eights = []
+for i in range(len(y)):
+    if y[i] == 8:
+        anEight = X[i]
+        #print("MERDAAAAAAAAA")
+        eights.append(anEight)
+        X.pop(i)
+        y.pop(i)
+        
 # Train, val and test separation
 
 #seed = 547845
@@ -42,20 +52,21 @@ print(f"-----[step 1: data splitted]-----")
 #print(models.best_knn_model(X_train, Y_train, X_val, Y_val))
 
 
-from neural import selectNN
+#from neural import selectNN
 #selectNN(X_train, Y_train, X_val, Y_val)
 
-from randomForest import best_rf_model
+from randomForest import selectRF
 
-#print(best_rf_model(X_train, Y_train, X_val, Y_val))
+#print(selectRF(X_train, Y_train, X_val, Y_val))
+
 #print(best_nn(X_train, Y_train, X_val, Y_val))
 
 
 
 
-from convnet import selectCNN
+#from convnet import selectCNN
 #print(best_convnet(X_train, Y_train, X_val, Y_val))
 
-from svm import best_svm_model
-best_svm_model(X_train, Y_train, X_val, Y_val)
-
+from svm import selectSVC, temporary
+#selectSVC(X_train, Y_train, X_val, Y_val)
+#temporary(X_train, Y_train, X_val, Y_val)
