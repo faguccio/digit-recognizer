@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 import os, sys
+import sklearn
 
 def stopPrint(func, *args, **kwargs):
     with open(os.devnull,"w") as devNull:
@@ -11,7 +12,6 @@ def stopPrint(func, *args, **kwargs):
         sys.stdout = devNull
         func(*args, **kwargs)
         sys.stdout = original 
-
 
 
 def accuracy(y_pred, Y):
@@ -38,8 +38,6 @@ def min_score(confmatx):
             classes[i] = 1
         else:
             classes[i] = confmatx[i][i] / tot
-    if min(classes) == 0 and classes.index(min(classes)) == 10:
-        input(confmatx)
     return min(classes), classes.index(min(classes))
 
 
@@ -89,15 +87,33 @@ def copy_data_set(X):
         for row in image:
             copy.append(row.copy())
         res.append(copy)
+    print(len(X), len(res)) 
+    return np.array(res)
+
+
+def printByVal(models, key, val):
+    summ = 0
+    tot = 0
+    for model in models:
+        if model[2][key] == val:
+            summ += model[1][0]
+            tot += 1
+    print(summ/tot)
     
-    return res
-    
-def printConfMatx(predictions, Y_val, flag):
+def printConfMatx(model, predictions, Y_val, flag):
     disp = metrics.ConfusionMatrixDisplay.from_predictions(Y_val, predictions)
-    disp.figure_.suptitle("Confusion Matrix")
+    disp.figure_.suptitle(f"{model} Confusion Matrix")
     print(f"Confusion matrix:\n{disp.confusion_matrix}")
-    plt.show()
+    #plt.show()
+    modelClass = type(model)
     if(flag):
-        plt.savefig('/images/confusion.png')
+        if isinstance(model, sklearn.svm.SVC):
+            plt.savefig('./images/confusionSVC.png')
+        elif isinstance(model, sklearn.ensemble.RandomForestClassifier):
+            plt.savefig('./images/confusionRF.png')
+        elif isinstance(model, sklearn.neural_network.MLPClassifier):
+            plt.savefig('./images/confusionNN.png')
+        else:
+            plt.savefig('./images/confusionCNN.png')
     else:
-        plt.savefig('/images/testingConfusion.png')
+        plt.savefig('./images/confusionWINNER.png')

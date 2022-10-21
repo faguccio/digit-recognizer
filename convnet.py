@@ -5,8 +5,11 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.utils import to_categorical
 from keras.layers import Conv2D, MaxPooling2D 
 import numpy as np
-from utilities import performanceKeras, findBest
+from utilities import performanceKeras, findBest, stopPrint
 import time
+
+
+print("\n\n")
 
 def createCNN(conv_layers):
     cnn = Sequential()
@@ -15,7 +18,6 @@ def createCNN(conv_layers):
     
 
     cnn.add(Flatten())
-#    cnn.add(Dense(64, activation='relu'))
     cnn.add(Dense(11, activation='softmax'))
     cnn.compile(loss = keras.losses.categorical_crossentropy, optimizer = 'adam', metrics = ['accuracy'])
     return cnn
@@ -92,7 +94,9 @@ def selectCNN(X_train, Y_train, X_val, Y_val):
    
     models = []
     print(f"how many cnn: {len(final_layers)}")
-    for bs, ep in itertools.product([32, 128], [6]): 
+    batch_sizes = [32]
+    epochss = [6]
+    for bs, ep in zip(batch_sizes, epochss): 
         for fl in final_layers:
             print(f"    {fl[1]}")
             model = createCNN(fl[0])
