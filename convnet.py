@@ -35,11 +35,6 @@ def trainCNN(model, X_train, Y_train, X_val, Y_val, batch_size, epochs):
        validation_data = (X_val, Y_val)
     )
     return time.time() - start
-
-
-
-
-
     
 
 
@@ -94,14 +89,14 @@ def selectCNN(X_train, Y_train, X_val, Y_val):
    
     models = []
     print(f"how many cnn: {len(final_layers)}")
-    batch_sizes = [32]
+    batch_sizes = [128]
     epochss = [6]
     for bs, ep in zip(batch_sizes, epochss): 
         for fl in final_layers:
             print(f"    {fl[1]}")
             model = createCNN(fl[0])
             print(f"        time {trainCNN(model, X_train, Y_train, X_val, Y_val, bs, ep)}")
-            models.append((model, (performanceKeras(model, X_val, Y_val))))
+            models.append((model, (performanceKeras(model, X_val, Y_val)), fl[1]))
             print(f"        acc: {models[-1][1][0]}")  
     return findBest(models)
 

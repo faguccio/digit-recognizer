@@ -101,7 +101,7 @@ def printByVal(models, key, val):
     
 def printConfMatx(model, predictions, Y_val):
     disp = metrics.ConfusionMatrixDisplay.from_predictions(Y_val, predictions)
-    disp.figure_.suptitle("{model} Confusion Matrix")
+    disp.figure_.suptitle(f"{model} Confusion Matrix")
     print(f"Confusion matrix:\n{disp.confusion_matrix}")
 
     plt.show()

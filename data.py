@@ -54,14 +54,10 @@ print(f"{len(X_eight)}")
 #seed = 547845
 
 reduction = 0.01
-# Making a toy problem with super small size, so exec time is lower
-
 X, _, y, __ = train_test_split(X, y, train_size=reduction) #, random_state=seed)
 print(f"Size of toy problem: {len(X), len(y)}")
 X_eight, _ , Y_eight, __ = train_test_split(X_eight, Y_eight, train_size = reduction)
 
-#oldX = ut.copy_data_set(X)
-#assert(X[20][3][15] == oldX[20][3][15])
 
 train_to_valtest = 0.70
 val_to_test = 0.5
