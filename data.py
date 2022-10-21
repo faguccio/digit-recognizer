@@ -12,7 +12,16 @@ print(f"-----[0: data imoported]-----")
 
 # Image preprocessing (increase contrast maybe)
 # sarebbe anche da pulire lo sfondo, ma come?
+
+
+for i in range(len(X)):
+    for x in range(len(X[i])):
+        for z in range(len(X[i][x])):
+            if X[i][x][z] <= 127:
+                X[i][x][z] = 0
+
 X = (X/255).astype('float32')
+
 
 
 #there is an abundance of 3 digits and a shortage of 8 digits.
@@ -101,6 +110,8 @@ X_test = np.array(X_test)
 Y_test = np.array(Y_test)
 print(f"-----[step 1: data splitted]-----")
                                   
+
+
 
 
 finalist = []
