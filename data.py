@@ -94,10 +94,10 @@ print("**********************\n\n\n")
 first_start = time.time()
 print("CNN")
 start = time.time()
-#finalist.append(selectCNN(X_train, Y_train, X_val, Y_val))
+finalist.append(selectCNN(X_train, Y_train, X_val, Y_val))
 print(f"totale time = {time.time() - start}")
 
-
+"""
 X_train = X_train.reshape(X_train.shape[0], 576)
 X_val = X_val.reshape(X_val.shape[0], 576)
 
@@ -120,17 +120,17 @@ print(f"totale time = {time.time() - start}")
 from svm import selectSVC
 print("SVC")
 start = time.time()
-#finalist.append(selectSVC(X_train, Y_train, X_val, Y_val))
+finalist.append(selectSVC(X_train, Y_train, X_val, Y_val))
 print(f"totale time = {time.time() - start}")
-
 
 from randomForest import selectRF
 print("Random Forest")
 start = time.time()
 finalist.append(selectRF(X_train, Y_train, X_val, Y_val))
 print(f"totale time = {time.time() - start}")
-
+"""
 print(f"totale time for real: {time.time() - first_start}")
+
 
 winner = ut.findBest(finalist)
 print(winner)

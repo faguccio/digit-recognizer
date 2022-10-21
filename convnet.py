@@ -91,7 +91,7 @@ def selectCNN(X_train, Y_train, X_val, Y_val):
     """    
    
     models = []
-    print(f"how many cnn: {len(fl)}")
+    print(f"how many cnn: {len(final_layers)}")
     for bs, ep in itertools.product([32, 128], [6]): 
         for fl in final_layers:
             print(f"    {fl[1]}")
