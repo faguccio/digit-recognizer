@@ -1,4 +1,6 @@
 from sklearn.metrics import confusion_matrix
+from sklearn import metrics
+import matplotlib.pyplot as plt
 import time
 import numpy as np
 import os, sys
@@ -62,8 +64,6 @@ def performanceKeras(model, X, Y):
 
 
 
-
-
 def findBest(models):
     best = None
     for model in models:
@@ -86,9 +86,8 @@ def copy_data_set(X):
         for row in image:
             copy.append(row.copy())
         res.append(copy)
-    
-    return res
-
+    print(len(X), len(res)) 
+    return np.array(res)
 
 
 def printByVal(models, key, val):
@@ -99,3 +98,10 @@ def printByVal(models, key, val):
             summ += model[1][0]
             tot += 1
     print(summ/tot)
+    
+def printConfMatx(model, predictions, Y_val):
+    disp = metrics.ConfusionMatrixDisplay.from_predictions(Y_val, predictions)
+    disp.figure_.suptitle("{model} Confusion Matrix")
+    print(f"Confusion matrix:\n{disp.confusion_matrix}")
+
+    plt.show()

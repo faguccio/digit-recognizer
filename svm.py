@@ -1,7 +1,7 @@
 import time
 from sklearn import svm, metrics
 from utilities import accuracy, findBest, performance, train
-import matplotlib.pyplot as plt
+
 
 #https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC
 
@@ -35,14 +35,6 @@ def selectSVC(X_train, Y_train, X_val, Y_val):
     
     return findBest(models)
     
-
-def printConfMatx(predictions, Y_val):
-    disp = metrics.ConfusionMatrixDisplay.from_predictions(Y_val, predictions)
-    disp.figure_.suptitle("SVC Confusion Matrix")
-    print(f"Confusion matrix:\n{disp.confusion_matrix}")
-
-    plt.show()
-
 
 def temporary(X_train, Y_train, X_val, Y_val):
     svc = create_svc(5, 'scale', 'rbf')
