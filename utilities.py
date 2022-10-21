@@ -35,8 +35,6 @@ def min_score(confmatx):
             classes[i] = 1
         else:
             classes[i] = confmatx[i][i] / tot
-    if min(classes) == 0 and classes.index(min(classes)) == 10:
-        input(confmatx)
     return min(classes), classes.index(min(classes))
 
 
