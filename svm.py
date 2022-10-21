@@ -44,7 +44,7 @@ def selectSVC(X_train, Y_train, X_val, Y_val):
     best_acc = 0
     best_combo = ('rbf', 'scale', 1.0)
     kernels = ('rbf', 'poly', 'sigmoid')
-    gammas = ('scale', 'auto', 0.001, 0.01, 0.1, 1.0)
+    gammas = ('scale', 'auto', 0.01, 0.1, 1.0)
     start, stop, step =  1, 10, 1  #c values
     
     for i in range(start, stop, step):
@@ -72,7 +72,7 @@ def printConfMatx(predictions, Y_val):
 
 
 def temporary(X_train, Y_train, X_val, Y_val):
-    svc = create_svc(5, 'scale', 'rbf' )
+    svc = create_svc(5, 'scale', 'rbf')
     print("svc created")
     train(svc, X_train, Y_train)
     print("svc trained")
