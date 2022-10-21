@@ -51,18 +51,35 @@ def performance(model, X, Y):
 
 
 
+def performanceKeras(model, X, Y):
+    start = time.time()
+    y_pred = cnn.predict(X)
+    predict_time = time.time() - start
+    y_pred = [ list(a).index(max(a)) for a in y_pred]
+    Y_val = [ list(a).index(max(a)) for a in Y]
+    conf_matrix = confusion_matrix(Y, np.rint(y_pred))
+    min_scr, min_class = min_score(conf_matrix) 
+    return model.score(X, Y), min_scr, min_class, conf_matrix, predict_time
+
+
+
+
+
 def findBest(models):
     best = None
     for model in models:
-        if best == None or model[1][0] > best[1][0] and model[1][1] >= best[1][1]:
+        if best == None:
+            best = model
+            continue
+        
+        margin = model[1][0] - best[1][0] 
+        if margin > 0 and model[1][1] + margin >= best[1][1] - margin:
             best = model
 
     return best
             
 
 
-
-# Image in format [[], ..., []]
 def copy_data_set(X):
     res = []
     for image in X:

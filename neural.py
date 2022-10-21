@@ -4,14 +4,8 @@ from sklearn.neural_network import MLPClassifier
 from utilities import train, performance, findBest
 import warnings
 import itertools
+
 warnings.filterwarnings('ignore') # setting ignore as a parameter
-
-# hyperparam su cui lavorare: 
-
-# alpha https://scikit-learn.org/stable/auto_examples/neural_networks/plot_mlp_alpha.html#sphx-glr-auto-examples-neural-networks-plot-mlp-alpha-py
-
-
-
 
 
 def createNN(layers, alpha, epochs, val_frac):
@@ -21,7 +15,6 @@ def createNN(layers, alpha, epochs, val_frac):
 
     nn = MLPClassifier(
             hidden_layer_sizes=layers, 
-            warm_start=True,
             early_stopping=early_stopping,
             alpha=alpha,
             validation_fraction=val_frac,
@@ -31,13 +24,12 @@ def createNN(layers, alpha, epochs, val_frac):
     return nn
 
 
-
 def selectNN(X_train, Y_train, X_val, Y_val):
     models = []
 
-    layers = ((80, 60, 40), (391), (250, 120))
-    alphas = (0.0001, 0.0005)
-    epochs = (1, 50)
+    layers = ((80, 60, 40), (391), (250, 125))
+    alphas = (0.0001, 0.001, 0.01, 0.1)
+    epochs = (50, 75)
     val_frac = (0, .5, .10)
     comb = itertools.product(layers, alphas, epochs, val_frac)
     for layer, alpha, epochs, val_frac in comb: 

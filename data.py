@@ -18,15 +18,14 @@ X = (X/255).astype('float32')
 
 #seed = 547845
 
-# Making a toy problem with super small size, so exec time is lower
-reduction = 0.1
+reduction = 0.005
 X, _, y, __ = train_test_split(X, y, train_size=reduction) #, random_state=seed)
 print(f"Size of toy problem: {len(X), len(y)}")
 
 #oldX = ut.copy_data_set(X)
 #assert(X[20][3][15] == oldX[20][3][15])
 
-X = X.reshape(X.shape[0], 576)
+#X = X.reshape(X.shape[0], 576)
 train_to_valtest = 0.70
 val_to_test = 0.5
 X_train, X_val, Y_train, Y_val = train_test_split(X, y, train_size=train_to_valtest) #, random_state=seed)
@@ -38,20 +37,13 @@ X_val, X_test, Y_val, Y_test = train_test_split(X_val, Y_val, train_size=val_to_
 print(f"-----[step 1: data splitted]-----")
 
 
-# Model 1 validation gathering: KNN
-#print(models.best_knn_model(X_train, Y_train, X_val, Y_val))
 
-
+"""
 from neural import selectNN
 print(selectNN(X_train, Y_train, X_val, Y_val))
-from randomForest import best_rf_model
-
-#print(best_rf_model(X_train, Y_train, X_val, Y_val))
-#print(best_nn(X_train, Y_train, X_val, Y_val))
-
-
+"""
 
 from convnet import selectCNN
-#print(best_convnet(X_train, Y_train, X_val, Y_val))
+print(selectCNN(X_train, Y_train, X_val, Y_val))
 
 
