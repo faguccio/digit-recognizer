@@ -156,10 +156,6 @@ print(f"totale time = {time.time() - start}")
 
 
 import svm
-print("SVC")
-start = time.time()
-finalist.append(svm.selectSVC(X_train, Y_train, X_val, Y_val))
-print(f"totale time = {time.time() - start}")
 
 
 import randomForest
